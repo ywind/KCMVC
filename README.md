@@ -1,2 +1,2 @@
 # KangMVC
-占坑，准备做个MVC框架
+参考SpringMVC和部分Struts2特性，完成简单的MVC框架
