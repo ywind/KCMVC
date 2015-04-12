@@ -6,5 +6,5 @@ package com.github.ywind.mvc.dispatcher;
  * 
  */
 public class Dispatcher {
-	
+		
 }
