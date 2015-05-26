@@ -1,8 +1,15 @@
 package com.github.ywind.ioc;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletContext;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
+import com.github.ywind.annotation.Controller;
+import com.github.ywind.annotation.InterceptorURI;
 
 /**
  * @author Ywind E-mail:guoshukang@vip.qq.com
@@ -11,11 +18,34 @@ import javax.servlet.ServletContext;
  * 
  */
 public class SpringIocFactory extends AbstractIocFactory {
-
+	
+	private ApplicationContext applicationContext;
+	private List<Object> controlBeans;
+	private List<Object> interceptorBeans;
+	private List<Object> otherBeans;
 	@Override
 	public void init(ServletContext context) {
-		// TODO Auto-generated method stub
-		super.init(context);
+		applicationContext = WebApplicationContextUtils
+				.getRequiredWebApplicationContext(context);
+		initBeans();
+	}
+
+	private void initBeans() {
+		controlBeans = new ArrayList<Object>();
+		interceptorBeans = new ArrayList<Object>();
+		otherBeans = new ArrayList<Object>();
+		String[] beanNames = applicationContext.getBeanDefinitionNames();
+		for (String string : beanNames) {
+			if (applicationContext.getBean(string).getClass().isAnnotationPresent(Controller.class) ) {
+				controlBeans.add(applicationContext.getBean(string));
+			}else if(applicationContext.getBean(string).getClass().isAnnotationPresent(InterceptorURI.class)){
+				interceptorBeans.add(applicationContext.getBean(string));
+			}else {
+				otherBeans.add(applicationContext.getBean(string));
+			}
+		}
+		
+		
 	}
 
 	@Override
@@ -27,19 +57,19 @@ public class SpringIocFactory extends AbstractIocFactory {
 	@Override
 	public List<Object> getControllers() throws Exception {
 		// TODO Auto-generated method stub
-		return super.getControllers();
+		return this.controlBeans;
 	}
 
 	@Override
 	public List<Object> getInterceptors() {
 		// TODO Auto-generated method stub
-		return super.getInterceptors();
+		return this.interceptorBeans;
 	}
 
 	@Override
 	public List<Object> getOthers() {
 		// TODO Auto-generated method stub
-		return super.getOthers();
+		return this.otherBeans;
 	}
 
 }

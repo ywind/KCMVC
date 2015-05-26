@@ -6,5 +6,5 @@ package com.github.ywind;
  * 
  */
 public interface HandlerMapping {
-
+	
 }
