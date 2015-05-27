@@ -1,5 +1,10 @@
 package com.github.ywind.handler;
 
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import com.github.ywind.interceptor.Interceptor;
 
 /**
@@ -9,6 +14,22 @@ import com.github.ywind.interceptor.Interceptor;
  * 
  */
 public class HandlerExecutionChain {
-	private Interceptor[] interceptors;
-	private Object controller;
+	private List<Interceptor> interceptors;
+	private HandlerAction handlerAction;
+	public List<Interceptor> getInterceptors() {
+		return interceptors;
+	}
+	public void setInterceptors(List<Interceptor> interceptors) {
+		this.interceptors = interceptors;
+	}
+	public HandlerAction getHandlerAction() {
+		return handlerAction;
+	}
+	public void setHandlerAction(HandlerAction handlerAction) {
+		this.handlerAction = handlerAction;
+	}
+	
+	public void execute(HttpServletRequest request, HttpServletResponse response) {
+		
+	}
 }
