@@ -1,7 +1,5 @@
 package com.github.ywind.mvc.dispatcher;
 
-import helper.IocFactoryHelper;
-
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -19,6 +17,7 @@ import com.github.ywind.annotation.InterceptorURI;
 import com.github.ywind.annotation.RequestURI;
 import com.github.ywind.handler.HandlerAction;
 import com.github.ywind.handler.HandlerExecutionChain;
+import com.github.ywind.helper.IocFactoryHelper;
 import com.github.ywind.interceptor.Interceptor;
 import com.github.ywind.ioc.IocFactory;
 
