@@ -25,6 +25,6 @@ public interface Interceptor {
 	 /*
 	  * 仅在处理之前拦截
 	  */
-	 void preHandle(HttpServletRequest request, HttpServletResponse response, Object handler);
+	 void doInterceptor(HttpServletRequest request, HttpServletResponse response);
 
 }

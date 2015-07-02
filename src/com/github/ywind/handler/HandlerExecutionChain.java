@@ -1,9 +1,12 @@
 package com.github.ywind.handler;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.eclipse.jdt.internal.compiler.ast.ThisReference;
 
 import com.github.ywind.interceptor.Interceptor;
 
@@ -29,7 +32,16 @@ public class HandlerExecutionChain {
 		this.handlerAction = handlerAction;
 	}
 	
-	public void execute(HttpServletRequest request, HttpServletResponse response) {
+	public Object execute(HttpServletRequest request, HttpServletResponse response) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		if (interceptors!=null) {
+			for (Interceptor interceptor : interceptors) {
+				interceptor.doInterceptor(request, response);
+			}
+		}
+		if (handlerAction==null) {
+			return null;
+		}
 		
+		return handlerAction.getMethod().invoke(handlerAction.getObject());
 	}
 }

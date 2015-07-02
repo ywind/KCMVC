@@ -11,12 +11,11 @@ import com.github.ywind.ioc.SpringIocFactory;
  */
 public class IocFactoryHelper {
 	private static class IocF{
-		private static final IocFactory instanceFactory = new SpringIocFactory();
-		private static IocFactory getInstance() {
-			return instanceFactory;
-		}
+		private static final IocFactory INSTANCE_FACTORY = new SpringIocFactory();
 	}
+	private IocFactoryHelper(){}
+	
 	public static IocFactory getIocFactory() {
-		return IocF.getInstance();
+		return IocF.INSTANCE_FACTORY;
 	}
 }

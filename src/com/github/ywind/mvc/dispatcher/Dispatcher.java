@@ -1,12 +1,14 @@
 package com.github.ywind.mvc.dispatcher;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +22,8 @@ import com.github.ywind.handler.HandlerExecutionChain;
 import com.github.ywind.helper.IocFactoryHelper;
 import com.github.ywind.interceptor.Interceptor;
 import com.github.ywind.ioc.IocFactory;
+import com.github.ywind.view.TextView;
+import com.sun.corba.se.spi.orbutil.fsm.Guard.Result;
 
 /**
  * @author Ywind E-mail:guoshukang@vip.qq.com
@@ -28,14 +32,22 @@ import com.github.ywind.ioc.IocFactory;
  * 
  */
 public class Dispatcher extends HttpServlet {
+	private ServletContext servletContext;
 	private Map<String, List<Interceptor>> interceptorMap;
 	private Map<String, HandlerAction> handlerMap;
 	
 	/*
 	 * 
 	 */
-	public void initBeans() throws Exception {
-		initControllerHander();
+	@Override
+	public void init() throws ServletException{
+		
+		IocFactoryHelper.getIocFactory().init(getServletContext());
+		try {
+			initControllerHander();
+		} catch (Exception e) {
+			throw new ServletException();
+		}
 		initInterceptor();
 	}
 	
@@ -76,8 +88,23 @@ public class Dispatcher extends HttpServlet {
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		HandlerExecutionChain handlerExecutionChain = getHandlerExecutionChain(request.getRequestURI());
-		handlerExecutionChain.execute(request,response);
+		log(request.getRequestURI());
+		HandlerExecutionChain handlerExecutionChain = getHandlerExecutionChain(request.getServletPath());
+		Object result=null;
+		try {
+			result = handlerExecutionChain.execute(request,response);
+		} catch (IllegalAccessException | IllegalArgumentException
+				| InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		if(result==null) response.sendError(HttpServletResponse.SC_NOT_FOUND);
+		if(result instanceof String)
+		{
+			new TextView((String)result).render(request, response);
+			//return;
+		}
 	}
 	
 	private HandlerExecutionChain getHandlerExecutionChain(String uri){
@@ -88,6 +115,8 @@ public class Dispatcher extends HttpServlet {
 		return handlerExecutionChain;
 		
 	}
+	
+	
 	
 	private List<Interceptor> getInterceptors(String uri){
 		return interceptorMap.get(uri);

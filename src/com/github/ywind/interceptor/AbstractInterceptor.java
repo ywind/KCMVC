@@ -24,8 +24,8 @@ public abstract class AbstractInterceptor implements Interceptor {
 	}
 
 	@Override
-	public void preHandle(HttpServletRequest request,
-			HttpServletResponse response, Object handler) {
+	public void doInterceptor(HttpServletRequest request,
+			HttpServletResponse response) {
 		// TODO Auto-generated method stub
 
 	}

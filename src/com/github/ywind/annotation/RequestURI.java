@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
  * 类说明
  * 
  */
-@Target(ElementType.TYPE)
+@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RequestURI {
 	public String rurl();

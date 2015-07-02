@@ -9,4 +9,22 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  <!-- 配置文件位置，默认为/WEB-INF/applicationContext.xml -->  
+    <context-param>  
+        <param-name>contextConfigLocation</param-name>  
+        <param-value>/WEB-INF/applicationContext.xml</param-value>  
+    </context-param>  
+    
+     <!-- 上下文Spring监听器 -->  
+    <listener>  
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>  
+    </listener>
+ <servlet>
+ <servlet-name>dispatcher</servlet-name>
+ <servlet-class>com.github.ywind.mvc.dispatcher.Dispatcher</servlet-class>
+ </servlet>
+ <servlet-mapping>
+    <servlet-name>dispatcher</servlet-name>
+    <url-pattern>*.do</url-pattern>
+  </servlet-mapping>
 </web-app>
