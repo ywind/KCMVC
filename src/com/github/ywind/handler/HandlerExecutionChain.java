@@ -1,12 +1,8 @@
 package com.github.ywind.handler;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.eclipse.jdt.internal.compiler.ast.ThisReference;
 
 import com.github.ywind.interceptor.Interceptor;
 
@@ -17,13 +13,14 @@ import com.github.ywind.interceptor.Interceptor;
  * 
  */
 public class HandlerExecutionChain {
-	private List<Interceptor> interceptors;
+	private Interceptor interceptorChain;
 	private HandlerAction handlerAction;
-	public List<Interceptor> getInterceptors() {
-		return interceptors;
+
+	public Interceptor getInterceptorChain() {
+		return interceptorChain;
 	}
-	public void setInterceptors(List<Interceptor> interceptors) {
-		this.interceptors = interceptors;
+	public void setInterceptorChain(Interceptor interceptorChain) {
+		this.interceptorChain = interceptorChain;
 	}
 	public HandlerAction getHandlerAction() {
 		return handlerAction;
@@ -32,16 +29,14 @@ public class HandlerExecutionChain {
 		this.handlerAction = handlerAction;
 	}
 	
-	public Object execute(HttpServletRequest request, HttpServletResponse response) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		if (interceptors!=null) {
-			for (Interceptor interceptor : interceptors) {
-				interceptor.doInterceptor(request, response);
-			}
-		}
+	public Object execute(HttpServletRequest request, HttpServletResponse response,Object...args) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		if (handlerAction==null) {
 			return null;
 		}
 		
-		return handlerAction.getMethod().invoke(handlerAction.getObject());
+		if(!interceptorChain.doInterceptor())
+			return null;
+		
+		return handlerAction.getMethod().invoke(handlerAction.getObject(),args);
 	}
 }

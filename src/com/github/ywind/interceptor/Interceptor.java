@@ -1,8 +1,5 @@
 package com.github.ywind.interceptor;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 
 /**
  * @author Ywind E-mail:guoshukang@vip.qq.com
@@ -32,6 +29,6 @@ public interface Interceptor {
 	 /*
 	  * 仅在处理之前拦截
 	  */
-	 void doInterceptor(HttpServletRequest request, HttpServletResponse response);
+	 boolean doInterceptor();
 
 }

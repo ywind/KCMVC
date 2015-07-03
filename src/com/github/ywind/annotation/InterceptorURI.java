@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
  * 
  */
 
-@Target(ElementType.METHOD)
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface InterceptorURI {
 	public String iurl();
