@@ -3,27 +3,25 @@ package com.github.ywind.mvc.dispatcher;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.github.ywind.annotation.Controller;
 import com.github.ywind.annotation.InterceptorURI;
 import com.github.ywind.annotation.RequestURI;
 import com.github.ywind.handler.HandlerAction;
 import com.github.ywind.handler.HandlerExecutionChain;
+import com.github.ywind.helper.ActionContext;
 import com.github.ywind.helper.IocFactoryHelper;
 import com.github.ywind.interceptor.Interceptor;
-import com.github.ywind.ioc.IocFactory;
 import com.github.ywind.view.TextView;
-import com.sun.corba.se.spi.orbutil.fsm.Guard.Result;
 
 /**
  * @author Ywind E-mail:guoshukang@vip.qq.com
@@ -32,7 +30,7 @@ import com.sun.corba.se.spi.orbutil.fsm.Guard.Result;
  * 
  */
 public class Dispatcher extends HttpServlet {
-	private ServletContext servletContext;
+	//private ServletContext servletContext;
 	private Map<String, List<Interceptor>> interceptorMap;
 	private Map<String, HandlerAction> handlerMap;
 	
@@ -41,7 +39,6 @@ public class Dispatcher extends HttpServlet {
 	 */
 	@Override
 	public void init() throws ServletException{
-		
 		IocFactoryHelper.getIocFactory().init(getServletContext());
 		try {
 			initControllerHander();
@@ -61,11 +58,16 @@ public class Dispatcher extends HttpServlet {
 				if (interceptorMap.containsKey(cls.getAnnotation(InterceptorURI.class).iurl())){
 					interceptorMap.get(cls.getAnnotation(InterceptorURI.class).iurl()).add((Interceptor)object);
 				}else {
-					List<Interceptor> i = new LinkedList<Interceptor>();
+					List<Interceptor> i = new ArrayList<Interceptor>();
+					((Interceptor)object).setWeight(cls.getAnnotation(InterceptorURI.class).weight());
 					i.add((Interceptor)object);
 					interceptorMap.put(cls.getAnnotation(InterceptorURI.class).iurl(), i);
 				}
 			}
+		}
+		
+		for (String uri : interceptorMap.keySet()) {
+			interceptorMap.get(uri);
 		}
 	}
 
@@ -80,7 +82,7 @@ public class Dispatcher extends HttpServlet {
 		Class<? extends Object> cls=obj.getClass();
 		Method[] methods=cls.getMethods();
 		for (Method method : methods) {
-			if (method.isAnnotationPresent(RequestURI.class)) {
+			if (method.isAnnotationPresent(RequestURI.class)) {	
 				handlerMap.put(method.getAnnotation(RequestURI.class).rurl(),new HandlerAction(obj,method));
 			}
 		}
@@ -88,6 +90,7 @@ public class Dispatcher extends HttpServlet {
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		ActionContext.setActionContext(getServletContext(), request, response);
 		log(request.getRequestURI());
 		HandlerExecutionChain handlerExecutionChain = getHandlerExecutionChain(request.getServletPath());
 		Object result=null;
@@ -97,6 +100,8 @@ public class Dispatcher extends HttpServlet {
 				| InvocationTargetException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally{
+			ActionContext.rmActionContext();
 		}
 		
 		if(result==null) response.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -115,15 +120,33 @@ public class Dispatcher extends HttpServlet {
 		return handlerExecutionChain;
 		
 	}
-	
-	
-	
+	/*
+	 * 根据uri最近匹配拦截器和控制器
+	 */
 	private List<Interceptor> getInterceptors(String uri){
+		int index=uri.length();
+		while(true){
+			if (interceptorMap.get(uri)!=null||index==0||index==-1) {
+				break;
+			}
+			index=uri.lastIndexOf("/", index);
+			uri = uri.substring(0, index+1)+"*";
+			log(uri);
+		}
 		return interceptorMap.get(uri);
 		
 	}
 	private HandlerAction getHandlerAction(String uri){
-		return handlerMap.get(uri);
+		int index=uri.length();
+		while(true){
+			if (handlerMap.get(uri)!=null||index==0||index==-1) {
+				break;
+			}
+			index=uri.lastIndexOf("/", index);
+			uri = uri.substring(0, index+1)+"*";
+			log(uri);
+		}
 		
+		return handlerMap.get(uri);
 	}
 }

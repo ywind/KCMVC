@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
-  <display-name>KCMVC</display-name>
+  <display-name>SimpleMVC</display-name>
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
     <welcome-file>index.htm</welcome-file>
@@ -9,21 +9,18 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
-  <!-- 配置文件位置，默认为/WEB-INF/applicationContext.xml -->  
-    <context-param>  
-        <param-name>contextConfigLocation</param-name>  
-        <param-value>/WEB-INF/applicationContext.xml</param-value>  
-    </context-param>  
-    
-     <!-- 上下文Spring监听器 -->  
-    <listener>  
-        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>  
-    </listener>
- <servlet>
- <servlet-name>dispatcher</servlet-name>
- <servlet-class>com.github.ywind.mvc.dispatcher.Dispatcher</servlet-class>
- </servlet>
- <servlet-mapping>
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>/WEB-INF/applicationContext.xml</param-value>
+  </context-param>
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  <servlet>
+    <servlet-name>dispatcher</servlet-name>
+    <servlet-class>com.github.ywind.mvc.dispatcher.Dispatcher</servlet-class>
+  </servlet>
+  <servlet-mapping>
     <servlet-name>dispatcher</servlet-name>
     <url-pattern>*.do</url-pattern>
   </servlet-mapping>

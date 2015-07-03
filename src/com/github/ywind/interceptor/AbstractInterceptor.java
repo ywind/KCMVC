@@ -10,6 +10,19 @@ import javax.servlet.http.HttpServletResponse;
  * 
  */
 public abstract class AbstractInterceptor implements Interceptor {
+	/*
+	 * 权重大的拦截器先执行
+	 */
+	private int weight;
+	
+	
+	public int getWeight() {
+		return weight;
+	}
+
+	public void setWeight(int weight) {
+		this.weight = weight;
+	}
 
 	@Override
 	public void init() {

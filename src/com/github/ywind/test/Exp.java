@@ -15,4 +15,9 @@ public class Exp {
 	public String test() {
 		return "ss";
 	}
+	
+	@RequestURI(rurl = "/test/*")
+	public String pipei() {
+		return "pipei";
+	}
 }

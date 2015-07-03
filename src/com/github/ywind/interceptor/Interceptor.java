@@ -11,7 +11,14 @@ import javax.servlet.http.HttpServletResponse;
  * 
  */
 public interface Interceptor {
-	
+	/*
+	 * 获取权重
+	 */
+	int getWeight();
+	/*
+	 * 设置权重
+	 */
+	void setWeight(int weight);
 	/*
 	 * 初始化
 	 */
