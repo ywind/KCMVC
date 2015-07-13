@@ -40,6 +40,7 @@ import com.github.ywind.helper.RegexHelper;
 import com.github.ywind.interceptor.Interceptor;
 import com.github.ywind.interceptor.InterceptorChain;
 import com.github.ywind.view.JSPView;
+import com.github.ywind.view.TextView;
 import com.github.ywind.view.View;
 
 /**
@@ -176,7 +177,7 @@ public class Dispatcher extends HttpServlet {
 					{
 						v=new JSPView((String)result);
 					}else {
-						v=new JSPView((String)result);
+						v=new TextView((String)result);
 					}
 				
 				v.render(null, request, response);
