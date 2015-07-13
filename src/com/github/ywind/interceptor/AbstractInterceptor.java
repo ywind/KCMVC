@@ -38,5 +38,11 @@ public abstract class AbstractInterceptor implements Interceptor {
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	@Override
+	public void postInterceptor() {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

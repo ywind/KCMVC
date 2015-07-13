@@ -12,11 +12,15 @@ import com.github.ywind.interceptor.AbstractInterceptor;
  */
 @InterceptorURI(iurl = "/test/convert.do", weight = 0)
 public class Interceptor extends AbstractInterceptor{
-
+	
 
 	public boolean doInterceptor() {
 		ActionContext.getActionContext().getRequest().setAttribute("interceptor1", "interceptor1");
 		return true;
 	}
 	
+	public void postInterceptor() {
+		ActionContext.getActionContext().getRequest().setAttribute("interceptor3", "interceptor3");
+	}
+
 }

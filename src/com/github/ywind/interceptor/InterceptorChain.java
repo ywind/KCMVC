@@ -11,6 +11,7 @@ import java.util.List;
 public class InterceptorChain extends AbstractInterceptor {
 
 	private List<Interceptor> interceptors;
+	int interceptorIndex =-1;
     
 	public InterceptorChain(List<Interceptor> interceptors) {
 		super();
@@ -26,7 +27,16 @@ public class InterceptorChain extends AbstractInterceptor {
 					flag=false;
 					break;
 				}
+			interceptorIndex++;
 		}
 		return flag;
+	}
+
+	@Override
+	public void postInterceptor() {
+		boolean flag=true;
+		for (int i = interceptorIndex; i >-1; i--) {
+			interceptors.get(i).postInterceptor();
+		}
 	}
 }

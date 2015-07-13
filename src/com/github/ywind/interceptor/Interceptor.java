@@ -30,5 +30,10 @@ public interface Interceptor {
 	  * 仅在处理之前拦截
 	  */
 	 boolean doInterceptor();
-
+	 
+	 /*
+	  * controlle执行之后的拦截
+	  */
+	 
+	 void postInterceptor();
 }

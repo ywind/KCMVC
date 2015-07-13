@@ -18,5 +18,10 @@ public class Interceptor2 extends AbstractInterceptor{
 		ActionContext.getActionContext().getRequest().setAttribute("interceptor2", "interceptor2");
 		return true;
 	}
+
+	@Override
+	public void postInterceptor() {
+		ActionContext.getActionContext().getRequest().setAttribute("interceptor4", "interceptor4");
+	}
 	
 }

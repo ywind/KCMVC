@@ -36,10 +36,11 @@ import com.github.ywind.handler.HandlerAction;
 import com.github.ywind.handler.HandlerExecutionChain;
 import com.github.ywind.helper.ActionContext;
 import com.github.ywind.helper.IocFactoryHelper;
+import com.github.ywind.helper.RegexHelper;
 import com.github.ywind.interceptor.Interceptor;
 import com.github.ywind.interceptor.InterceptorChain;
-import com.github.ywind.view.JSP;
-import com.github.ywind.view.TextView;
+import com.github.ywind.view.JSPView;
+import com.github.ywind.view.View;
 
 /**
  * @author Ywind E-mail:guoshukang@vip.qq.com
@@ -48,9 +49,7 @@ import com.github.ywind.view.TextView;
  * 
  */
 public class Dispatcher extends HttpServlet {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	private final Log log=LogFactory.getLog(getClass());
 	private Map<String, List<Interceptor>> interceptorMap;
@@ -64,7 +63,7 @@ public class Dispatcher extends HttpServlet {
 		log.debug("init...");
 		IocFactoryHelper.getIocFactory().init(getServletContext());
 		try {
-			initControllerHander();
+			initControllerHandler();
 		} catch (Exception e) {
 			throw new ServletException();
 		}
@@ -110,7 +109,7 @@ public class Dispatcher extends HttpServlet {
 	/*
 	 * 初始化控制器
 	 */
-	private void initControllerHander() throws Exception {
+	private void initControllerHandler() throws Exception {
 		List<Object> controllers = IocFactoryHelper.getIocFactory().getControllers();
 		handlerMap = new HashMap<String, HandlerAction>();
 		for (Object object : controllers) {
@@ -169,21 +168,20 @@ public class Dispatcher extends HttpServlet {
 			ActionContext.rmActionContext();
 		}
 		
-		if(result==null) response.sendError(HttpServletResponse.SC_NOT_FOUND);
-		if(result instanceof String)
-		{
-			new TextView((String)result).render(request, response);
-			//return;
+		if(result==null) {
+			response.sendError(HttpServletResponse.SC_NOT_FOUND);
+		}else if(result instanceof String){
+				View v =null;
+				if(RegexHelper.regexURL(((String)result)))
+					{
+						v=new JSPView((String)result);
+					}else {
+						v=new JSPView((String)result);
+					}
+				
+				v.render(null, request, response);
 		}
-		if(result instanceof String)
-		{
-			new TextView((String)result).render(request, response);
-			//return;
-		}
-		if(result instanceof JSP)
-		{
-			((JSP)result).render(request, response);
-		}
+		return;
 	}
 	
 	private HandlerExecutionChain getHandlerExecutionChain(String uri){

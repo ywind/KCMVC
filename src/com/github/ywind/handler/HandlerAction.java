@@ -1,5 +1,6 @@
 package com.github.ywind.handler;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
@@ -28,6 +29,18 @@ public class HandlerAction {
 	}
 	public void setMethod(Method method) {
 		this.method = method;
+	}
+	
+	public Object excute(Object...args) {
+		
+		try {
+			return getMethod().invoke(object,args);
+		} catch (IllegalAccessException | IllegalArgumentException
+				| InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 }

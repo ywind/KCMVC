@@ -37,6 +37,11 @@ public class HandlerExecutionChain {
 		if(!interceptorChain.doInterceptor())
 			return null;
 		
-		return handlerAction.getMethod().invoke(handlerAction.getObject(),args);
+		return handlerAction.excute(args);
+	}
+	
+	public void postHander(HttpServletRequest request, HttpServletResponse response,Object...args) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		interceptorChain.postInterceptor();
+		
 	}
 }

@@ -12,8 +12,7 @@ import javax.servlet.ServletContext;
  */
 public interface IocFactory {
 		/**
-		 * 初始化
-		 * @param config
+		 *初始化
 		 */
 		void init(ServletContext context);
 		
@@ -25,13 +24,13 @@ public interface IocFactory {
 		
 		
 		/**
-		 * 得到controler
+		 * 得到controlers
 		 * @return
 		 */
 		List<Object> getControllers()throws Exception;
 		
 		/**
-		 * 得到interpcetor
+		 * 得到interpcetors
 		 * @return
 		 */
 		List<Object> getInterceptors();
