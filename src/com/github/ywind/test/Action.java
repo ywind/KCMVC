@@ -25,6 +25,6 @@ public class Action {
 	@RequestURI(rurl = "/test/convert.do")
 	public String convert(int i) {
 		ActionContext.getActionContext().getRequest().setAttribute("user",new User("test"));
-		return "index.jsp";
+		return "../index.jsp";
 	}
 }

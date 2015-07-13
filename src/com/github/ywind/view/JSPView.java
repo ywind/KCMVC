@@ -20,7 +20,7 @@ public class JSPView extends AbstractView {
 	
 	public JSPView(String path) {
 		this.path=path;
-		type=ForwardType.Redirect;
+		type=ForwardType.Forward;
 	}
 	
 	public JSPView(String path,ForwardType type) {
