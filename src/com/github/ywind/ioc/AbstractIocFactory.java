@@ -6,8 +6,7 @@ import javax.servlet.ServletContext;
 
 /**
  * @author Ywind E-mail:guoshukang@vip.qq.com
- * @version 创建时间：2015年4月12日 下午4:47:13
- * 类说明
+ * @version 创建时间：2015年4月12日 下午4:47:13 类说明
  * 
  */
 public abstract class AbstractIocFactory implements IocFactory {
@@ -15,13 +14,13 @@ public abstract class AbstractIocFactory implements IocFactory {
 	@Override
 	public void init(ServletContext context) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void destroy() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -41,5 +40,5 @@ public abstract class AbstractIocFactory implements IocFactory {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 }

@@ -2,8 +2,7 @@ package com.github.ywind.interceptor;
 
 /**
  * @author Ywind E-mail:guoshukang@vip.qq.com
- * @version 创建时间：2015年4月12日 下午4:16:24
- * 类说明
+ * @version 创建时间：2015年4月12日 下午4:16:24 类说明
  * 
  */
 public abstract class AbstractInterceptor implements Interceptor {
@@ -11,8 +10,7 @@ public abstract class AbstractInterceptor implements Interceptor {
 	 * 权重大的拦截器先执行
 	 */
 	private int weight;
-	
-	
+
 	public int getWeight() {
 		return weight;
 	}
@@ -38,11 +36,11 @@ public abstract class AbstractInterceptor implements Interceptor {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
+
 	@Override
 	public void postInterceptor() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

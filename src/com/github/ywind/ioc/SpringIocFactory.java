@@ -13,16 +13,16 @@ import com.github.ywind.annotation.InterceptorURI;
 
 /**
  * @author Ywind E-mail:guoshukang@vip.qq.com
- * @version 创建时间：2015年4月12日 下午4:48:29
- * 类说明
+ * @version 创建时间：2015年4月12日 下午4:48:29 类说明
  * 
  */
 public class SpringIocFactory extends AbstractIocFactory {
-	
+
 	private ApplicationContext applicationContext;
 	private List<Object> controlBeans;
 	private List<Object> interceptorBeans;
 	private List<Object> otherBeans;
+
 	@Override
 	public void init(ServletContext context) {
 		applicationContext = WebApplicationContextUtils
@@ -36,16 +36,17 @@ public class SpringIocFactory extends AbstractIocFactory {
 		otherBeans = new ArrayList<Object>();
 		String[] beanNames = applicationContext.getBeanDefinitionNames();
 		for (String string : beanNames) {
-			if (applicationContext.getBean(string).getClass().isAnnotationPresent(Controller.class) ) {
+			if (applicationContext.getBean(string).getClass()
+					.isAnnotationPresent(Controller.class)) {
 				controlBeans.add(applicationContext.getBean(string));
-			}else if(applicationContext.getBean(string).getClass().isAnnotationPresent(InterceptorURI.class)){
+			} else if (applicationContext.getBean(string).getClass()
+					.isAnnotationPresent(InterceptorURI.class)) {
 				interceptorBeans.add(applicationContext.getBean(string));
-			}else {
+			} else {
 				otherBeans.add(applicationContext.getBean(string));
 			}
 		}
-		
-		
+
 	}
 
 	@Override

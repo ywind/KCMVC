@@ -7,8 +7,7 @@ import java.lang.annotation.Target;
 
 /**
  * @author Ywind E-mail:guoshukang@vip.qq.com
- * @version 创建时间：2015年4月8日 下午4:29:30
- * 类说明
+ * @version 创建时间：2015年4月8日 下午4:29:30 类说明
  * 
  */
 @Target(ElementType.METHOD)
